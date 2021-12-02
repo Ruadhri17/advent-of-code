@@ -1,50 +1,31 @@
 ﻿int measurementIncreases = 0, windowMeasurementIncreases = 0;
-int prevElement = 0;
-List<Int32> measurementList = new List<Int32>();
+List<int> measurementList = new List<int>();
 try
 {
     using (StreamReader sr = new StreamReader("input.txt"))
     {
+        // READ NUMBERS //
         string line;
         while ((line = sr.ReadLine()) != null)
-         measurementList.Add(Int32.Parse(line));
+            measurementList.Add(int.Parse(line));
+        
         // PART 1 //
-        foreach (int number in measurementList)
-        {
-            if (prevElement == 0)
-            {
-                prevElement = number;
-                continue;
-            }
-            if ( number > prevElement ) 
+        for (int i = 1; i < measurementList.Count(); i++)
+            if (measurementList[i] > measurementList[i-1])
                 measurementIncreases++;
-            prevElement = number;    
-        }
-        prevElement = 0;
+        
         // PART 2 //
-        for (int i = 0; i < measurementList.Count(); i++)
+        for (int i = 1; i < measurementList.Count() - 2; i++)
             {
-                if (i == measurementList.Count() - 2)
-                    break;
-                if (prevElement == 0)
-                {
-                    prevElement = measurementList[i] + measurementList[i+1] + measurementList[i+2];
-                    continue;
-                }
-                if (( measurementList[i] + measurementList[i+1] + measurementList[i+2]) > prevElement)
+                if ((measurementList[i] + measurementList[i+1] + measurementList[i+2]) > (measurementList[i-1] + measurementList[i] + measurementList[i+1]))
                     windowMeasurementIncreases++;
-                prevElement = measurementList[i] + measurementList[i+1] + measurementList[i+2];
             }
     }
     
-    Console.WriteLine("PART1: the number of times a depth measurement increases: ");
-    Console.WriteLine(measurementIncreases);
-    
-    Console.WriteLine("PART2: the number of times a depth measurement increases: ");
-    Console.WriteLine(windowMeasurementIncreases);
+    Console.WriteLine($"PART1: the number of times a depth measurement increases: {measurementIncreases}");
+    Console.WriteLine($"PART2: the number of times a depth measurement increases: {windowMeasurementIncreases}");
 }
 catch (Exception e)
 {
-    Console.WriteLine("The file could not be read:");
-    Console.WriteLine(e.Message);
+    Console.WriteLine($"The file could not be read: {e.Message}");
 }
